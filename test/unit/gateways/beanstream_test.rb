@@ -135,6 +135,16 @@ class BeanstreamTest < Test::Unit::TestCase
     assert_equal 'Approved', response.message
   end
 
+  def test_successful_recurring_without_expiry_date
+    @gateway.expects(:ssl_post).returns(successful_recurring_response)
+    @recurring_options[:recurring_billing][:duration].delete(:occurrences)
+    @gateway.expects(:calculate_expiry_date).never
+    assert response = @gateway.recurring(@amount, @credit_card, @recurring_options)
+
+    assert_success response
+    assert_equal 'Approved', response.message
+  end
+
   def test_successful_update_recurring
     @gateway.expects(:ssl_post).returns(successful_recurring_response)
 

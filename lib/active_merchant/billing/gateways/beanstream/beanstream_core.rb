@@ -209,10 +209,14 @@ module ActiveMerchant #:nodoc:
         post[:rbBillingPeriod]    = PERIOD[recurring_options[:interval][:unit]]
         post[:rbBillingIncrement] = recurring_options[:interval][:length]
         post[:rbFirstBilling]     = recurring_options[:duration][:start_date].strftime("%m%d%Y") if recurring_options[:duration] && recurring_options[:duration][:start_date] 
-				start_date = recurring_options[:duration][:start_date] || Date.today
-				post[:rbExpiry] = (start_date + (recurring_options[:duration][:occurrences].to_i * recurring_options[:interval][:length].to_i).send(recurring_options[:interval][:unit])).strftime("%m%d%Y")
+        start_date = recurring_options[:duration][:start_date] || Date.today
+        post[:rbExpiry] = calculate_expiry_date(start_date,recurring_options) if recurring_options[:duration][:occurrences]
         post[:rbEndMonth]         = recurring_options[:end_of_month] if recurring_options[:end_of_month]
         post[:rbApplyTax1]        = recurring_options[:tax1] if recurring_options[:tax1]
+      end
+
+      def calculate_expiry_date(start_date,recurring_options)
+        (start_date + (recurring_options[:duration][:occurrences].to_i * recurring_options[:interval][:length].to_i).send(recurring_options[:interval][:unit])).strftime("%m%d%Y")
       end
 
       def parse(body)
