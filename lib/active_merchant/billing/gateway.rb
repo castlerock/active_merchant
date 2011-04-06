@@ -62,7 +62,8 @@ module ActiveMerchant #:nodoc:
       include Utils
       
       DEBIT_CARDS = [ :switch, :solo ]
-      
+      CURRENCIES_WITHOUT_FRACTIONS = [ 'JPY' ]
+            
       cattr_reader :implementations
       @@implementations = []
       
@@ -139,7 +140,7 @@ module ActiveMerchant #:nodoc:
           money
         end
 
-        if money.is_a?(String) or cents.to_i < 0
+        if money.is_a?(String) 
           raise ArgumentError, 'money amount must be a positive Integer in cents.' 
         end
 
@@ -148,6 +149,11 @@ module ActiveMerchant #:nodoc:
         else
           sprintf("%.2f", cents.to_f / 100)
         end
+      end
+
+      def localized_amount(money, currency)
+        amount = amount(money)
+        CURRENCIES_WITHOUT_FRACTIONS.include?(currency.to_s) ? amount.split('.').first : amount
       end
       
       def currency(money)
