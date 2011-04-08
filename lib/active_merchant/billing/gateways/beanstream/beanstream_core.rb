@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+require File.dirname(__FILE__) + '/beanstream_response_helper'
 module ActiveMerchant #:nodoc:
   module Billing #:nodoc:
     module BeanstreamCore
       URL = 'https://www.beanstream.com/scripts/process_transaction.asp'
       RECURRING_URL = 'https://www.beanstream.com/scripts/recurring_billing.asp'
       REPORT_URL = 'https://www.beanstream.com/scripts/report_download.asp'
+
+       include BeanstreamResponseHelper
 
       TRANSACTIONS = {
               :authorization  => 'PA',
@@ -16,21 +19,6 @@ module ActiveMerchant #:nodoc:
               :check_credit   => 'C',
               :void_purchase  => 'VP',
               :void_credit    => 'VR'
-      }
-
-      CVD_CODES = {
-              '1' => 'M',
-              '2' => 'N',
-              '3' => 'I',
-              '4' => 'S',
-              '5' => 'U',
-              '6' => 'P'
-      }
-
-      AVS_CODES = {
-              '0' => 'R',
-              '5' => 'I',
-              '9' => 'I'
       }
 
       PERIOD = {
@@ -304,29 +292,12 @@ module ActiveMerchant #:nodoc:
         )
       end
 
-      def make_recurring_response_notification(response)
-         build_response(success?(response), message_from(response), response,
-                       :test => test? || response[:authCode] == "TEST",
-                       :authorization => authorization_from(response),
-                       :cvv_result => CVD_CODES[response[:cvdId]],
-                       :avs_result => { :code => (AVS_CODES.include? response[:avsId]) ? AVS_CODES[response[:avsId]] : response[:avsId] }
-        )
-      end
-
-      def authorization_from(response)
-        "#{response[:trnId]};#{response[:trnAmount]};#{response[:trnType]}"
-      end
-
       def recurring_authorization_from(response)
         response[:account_id]
       end
 
       def transaction_authorization_from(response)
         "#{response['trn_id']};#{response['trn_amount']};#{response['trn_type']}"
-      end
-
-      def message_from(response)
-        response[:messageText]
       end
 
       def transaction_message(response)
@@ -347,10 +318,6 @@ module ActiveMerchant #:nodoc:
 
       def recurring_message_from(response)
         response[:message]
-      end
-
-      def success?(response)
-        response[:responseType] == 'R' || response[:trnApproved] == '1'
       end
 
       def transaction_approved?(response)

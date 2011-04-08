@@ -7,6 +7,7 @@ require 'rake/rdoctask'
 require 'rake/gempackagetask'
 require 'support/gateway_support'
 require 'support/outbound_hosts'
+require 'money'
 
 desc "Run the unit test suite"
 task :default => 'test:units'
