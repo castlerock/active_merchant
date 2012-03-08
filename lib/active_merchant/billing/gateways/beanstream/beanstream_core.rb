@@ -154,6 +154,14 @@ module ActiveMerchant #:nodoc:
         post[:trnCardCvd] = credit_card.verification_value
       end
 
+      def add_billing_state(post, options)
+        post[:rbBillingState] = options[:billing_state] if !options[:billing_state].blank?
+      end
+
+      def add_back_payment_state(post, options)
+        post[:processBackPayments]  = options[:process_back_payment] if !options[:process_back_payment].blank?
+      end
+
       def add_check(post, check)
         # The institution number of the consumer’s financial institution. Required for Canadian dollar EFT transactions.
         post[:institutionNumber] = check.institution_number

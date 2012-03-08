@@ -105,6 +105,8 @@ module ActiveMerchant #:nodoc:
         add_recurring_invoice(post, options)
         add_credit_card(post, source)
         add_address(post, options)
+        add_billing_state(post, options)
+        add_back_payment_state(post, options)
         add_recurring_operation_type(post, :update)
         add_recurring_service(post, options)
         recurring_commit(post)
