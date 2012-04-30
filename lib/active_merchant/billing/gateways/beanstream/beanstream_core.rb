@@ -261,7 +261,7 @@ module ActiveMerchant #:nodoc:
       end
 
       def parse_transaction_report(response_body)
-        transaction_rows = FasterCSV.new(response_body, {:col_sep => "\t"}).read
+        transaction_rows = CSV.new(response_body, {:col_sep => "\t"}).read
         transaction_reports = []
         header = transaction_rows.shift(1)
         header.flatten!
