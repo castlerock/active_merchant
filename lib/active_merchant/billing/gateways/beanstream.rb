@@ -112,6 +112,14 @@ module ActiveMerchant #:nodoc:
         recurring_commit(post)
       end
       
+      def update_recurring_amount(amount, options = {})
+        post = {}
+        add_recurring_amount(post, amount)
+        add_recurring_operation_type(post, :update)
+        add_recurring_service(post, options)
+        recurring_commit(post)
+      end
+
       def cancel_recurring(options = {})
         post = {}
         add_recurring_operation_type(post, :cancel)

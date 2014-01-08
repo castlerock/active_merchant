@@ -163,6 +163,24 @@ class BeanstreamTest < Test::Unit::TestCase
     assert_equal "Request successful", response.message
   end
 
+  def test_successful_update_recurring_amount
+    @gateway.expects(:ssl_post).returns(successful_recurring_response)
+
+    assert response = @gateway.update_recurring_amount(@amount, @recurring_options)
+
+    assert_success response
+    assert_equal 'Approved', response.message
+
+    @gateway.expects(:ssl_post).returns(successful_update_recurring_response)
+
+    assert response = @gateway.update_recurring_amount(@amount, @recurring_options.merge({:account_id => response.params["rbAccountId"],
+                                                                                                :billing_state => 'A',
+                                                                                                :process_back_payment => "0"}))
+
+    assert_success response
+    assert_equal "Request successful", response.message
+  end
+
   def test_successful_cancel_recurring
     @gateway.expects(:ssl_post).returns(successful_recurring_response)
 
