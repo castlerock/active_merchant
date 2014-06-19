@@ -400,6 +400,7 @@ module ActiveMerchant #:nodoc:
         params[:loginCompany] = @options[:login]
         params[:loginUser] = @options[:user] if @options[:user]
         params[:loginPass] = @options[:password] if @options[:password]
+        params[:passCode] = @options[:pass_code] if @options[:pass_code]
         params[:vbvEnabled] = '0'
         params[:scEnabled] = '0'
         params[:rptNoFile]=0
