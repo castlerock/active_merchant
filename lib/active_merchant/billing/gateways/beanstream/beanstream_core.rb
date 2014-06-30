@@ -146,8 +146,21 @@ module ActiveMerchant #:nodoc:
         post[:ordTax2Price]     = amount(options[:tax2])
         post[:ref1]             = options[:custom]
       end
+
+      # Currently in beanstream, name validation happens for 4-32 chars.
+      # While creating if this validation fails, name gets saved in beanstream by truncated.
+      # But while updating throws validation error. So truncating from outside itself to avoid this.
+      #  <response>
+      #    <message>Customer address/payment information failed data validation</message>
+      #    <errors>
+      #      <parameter>
+      #        <name>trnCardOwner</name>
+      #        <reason>Card owner name must be between 4 and 32 characters</reason>
+      #      </parameter>
+      #    </errors>
+      #  </response>
       def add_credit_card(post, credit_card)
-        post[:trnCardOwner] = credit_card.name
+        post[:trnCardOwner] = credit_card.name.slice(0..31)
         post[:trnCardNumber] = credit_card.number
         post[:trnExpMonth] = format(credit_card.month, :two_digits)
         post[:trnExpYear] = format(credit_card.year, :two_digits)
