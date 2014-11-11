@@ -3,9 +3,9 @@ require File.dirname(__FILE__) + '/beanstream_response_helper'
 module ActiveMerchant #:nodoc:
   module Billing #:nodoc:
     module BeanstreamCore
-      URL = 'https://www.beanstream.com/scripts/process_transaction.asp'
-      RECURRING_URL = 'https://www.beanstream.com/scripts/recurring_billing.asp'
-      REPORT_URL = 'https://www.beanstream.com/scripts/report_download.asp'
+      URL = 'https://ssltest.beanstream.com/scripts/process_transaction.asp'
+      RECURRING_URL = 'https://ssltest.beanstream.com/scripts/recurring_billing.asp'
+      REPORT_URL = 'https://ssltest.beanstream.com/scripts/report_download.asp'
 
        include BeanstreamResponseHelper
 
@@ -38,7 +38,7 @@ module ActiveMerchant #:nodoc:
         base.supported_cardtypes = [:visa, :master, :american_express]
 
         # The homepage URL of the gateway
-        base.homepage_url = 'http://www.beanstream.com/'
+        base.homepage_url = 'http://ssltest.beanstream.com/'
 
         # The name of the gateway
         base.display_name = 'Beanstream.com'
