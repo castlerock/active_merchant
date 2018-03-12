@@ -32,6 +32,7 @@ module ActiveMerchant #:nodoc:
             uri = URI.parse(url)
             site = Net::HTTP.new(uri.host, uri.port)
             site.use_ssl = true
+            site.ssl_version = :TLSv1_2
             site.verify_mode    = OpenSSL::SSL::VERIFY_NONE
             site.get(path).body
           end
