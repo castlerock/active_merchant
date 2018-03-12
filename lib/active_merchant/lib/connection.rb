@@ -109,8 +109,7 @@ module ActiveMerchant
       return unless endpoint.scheme == "https"
 
       http.use_ssl = true
-      http.ssl_version = :TLSv1_2
-
+      
       if verify_peer
         http.verify_mode = OpenSSL::SSL::VERIFY_PEER
         http.ca_file     = File.dirname(__FILE__) + '/../../certs/cacert.pem'
