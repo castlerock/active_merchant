@@ -362,6 +362,7 @@ module ActiveMerchant #:nodoc:
         params[:merchant_id] = @options[:login]
         params[:username] = @options[:user] if @options[:user]
         params[:password] = @options[:password] if @options[:password]
+        params[:passcode] = @options[:pass_code] if @options[:pass_code]
         params[:vbvEnabled] = '0'
         params[:scEnabled] = '0'
 
